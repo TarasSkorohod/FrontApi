@@ -1,0 +1,266 @@
+"use strict";
+
+Vue.component('rounded-progress-bar', {
+	
+	
+	// ~~~~~~~~~~~~~~~~~~~~~~				properties
+	props: {
+		id: { required: true },
+		value: { required: true },
+		color: { default: "#ec3f7a" },
+		transparent: { default: true },
+		icon: { default: "ph-heart" },
+		top_text0: {},
+		top_text1: {},
+		bottom_text0: {},
+		bottom_text1: {},
+		cols: {},
+	},
+	
+	// ~~~~~~~~~~~~~~~~~~~~~~				data
+	data: function () {
+		return {
+			chart_init: false,
+			svg: undefined,
+		}
+	},
+	
+	// ~~~~~~~~~~~~~~~~~~~~~~				computed
+	computed: {
+		progress_percentage() { return 'progress-percentage-' + this.id },
+		
+		icon_color() { return this.transparent ? this.color : "#fff" },
+		bg_color() { return this.transparent ? "#fff" : this.color },
+		text_color() { return this.transparent ? "#000" : "#fff" },
+	},
+	
+	// ~~~~~~~~~~~~~~~~~~~~~~				methods
+	methods: {
+
+		progressIcon(element, radius, border, foregroundColor, end, iconClass) {
+			if (typeof d3 == 'undefined') {
+				console.warn('Warning - d3.min.js is not loaded.');
+				return;
+			}
+			
+			var self = this;
+
+			// Initialize chart only if element exsists in the DOM
+			if (element) {
+
+
+				// Basic setup
+				// ------------------------------
+
+				// Main variables
+				var d3Container = d3.select(element),
+					startPercent = 0,
+					endPercent = end,
+					twoPi = Math.PI * 2,
+					formatPercent = d3.format('.0%'),
+					boxSize = radius * 2;
+
+				// Values count
+				var count = Math.abs((endPercent - startPercent) / 0.01);
+
+				// Values step
+				var step = endPercent < startPercent ? -0.01 : 0.01;
+
+
+				// Create chart
+				// ------------------------------
+
+				// Add SVG element
+				var container = d3Container.append('svg');
+
+				// Add SVG group
+				var svg = container
+					.attr('width', boxSize)
+					.attr('height', boxSize)
+					.append('g')
+					.attr('transform', 'translate(' + (boxSize / 2) + ',' + (boxSize / 2) + ')');
+
+				
+				// Construct chart layout
+				// ------------------------------
+
+				// Arc
+				var arc = d3.svg.arc()
+					.startAngle(0)
+					.innerRadius(radius)
+					.outerRadius(radius - border)
+					.cornerRadius(20);
+
+
+				//
+				// Append chart elements
+				//
+
+				// Paths
+				// ------------------------------
+
+				// Background path
+				svg.append('path')
+					.attr('class', 'd3-progress-background')
+					.attr('d', arc.endAngle(twoPi))
+					.style('fill', foregroundColor)
+					.style('opacity', 0.1);
+
+				// Foreground path
+				var foreground = svg.append('path')
+					.attr('class', 'd3-progress-foreground')
+					.attr('filter', 'url(#blur)')
+					.style({
+						'fill': foregroundColor,
+						'stroke': foregroundColor
+					});
+
+				// Front path
+				var front = svg.append('path')
+					.attr('class', 'd3-progress-front')
+					.style({
+						'fill': foregroundColor,
+						'fill-opacity': 1
+					});
+
+
+				// Text
+				// ------------------------------
+
+				// Percentage text value
+				var numberText = d3.select('.' + self.progress_percentage )
+					.attr('class', 'pt-1 mt-2 mb-1 ' + self.progress_percentage);
+
+				// Icon
+				d3.select(element)
+					.append("i")
+					.attr("class", iconClass + " counter-icon")
+					.style({
+						'color': foregroundColor
+					});
+
+
+				// Animation
+				// ------------------------------
+
+				// Animate path
+				function updateProgress(progress) {
+					foreground.attr('d', arc.endAngle(twoPi * progress));
+					front.attr('d', arc.endAngle(twoPi * progress));
+					numberText.text(formatPercent(progress));
+				}
+
+				// Animate text
+				var progress = startPercent;
+				(function loops() {
+					updateProgress(progress);
+					if (count > 0) {
+						count--;
+						progress += step;
+						setTimeout(loops, 10);
+					}
+				})();
+				
+				self.svg = svg;
+				self.chart_init = true;
+			}
+		},	
+
+
+
+		createPlugin() {		
+
+			this.progressIcon('#' + this.id, 42, 2.5, this.icon_color, this.value, this.icon);		
+
+		}
+		
+	},	
+	
+	
+	
+	mounted() {
+
+		if (document.readyState === "complete") {
+			this.createPlugin();
+		} else {
+			window.addEventListener("DOMContentLoaded", this.createPlugin());
+		}		
+
+	},
+	
+	
+	watch: {
+		
+        "value": {
+            handler: function( new_value ) {
+				d3.select("svg").remove();
+				this.progressIcon('#' + this.id, 42, 2.5, this.icon_color, new_value, this.icon );
+
+
+            },
+            deep: true
+        },
+
+		
+	},	
+	
+	// ~~~~~~~~~~~~~~~~~~~~~~				template
+	template: `
+	
+<div class="card card-body text-center" :style=" 'background-color:' + bg_color ">
+	
+	<h6  v-if="top_text0" class="mb-0 mt-1"  :style=" 'color:' + text_color + '!important'">{{top_text0}}</h6>
+	<div 
+		 v-if="top_text1" 
+		class="mb-3"
+		:class = " transparent ? 'text-muted' : 'opacity-75' "
+		:style=" 'color:' + text_color + ''  "		
+	>{{top_text1}}</div>
+	
+	
+	<div class="svg-center position-relative" :id="id"></div>
+	
+	
+	<h4 class="mt-2 mb-1" :class=" progress_percentage " :style=" 'color:' + text_color + '!important'">0%</h4>
+
+	<span v-if="bottom_text0" :style=" 'color:' + text_color + '!important'">{{bottom_text0}}</span>
+	<div 
+		v-if="bottom_text1"
+		class="fs-sm" 
+		:class = " transparent ? 'text-muted' : 'opacity-75' "
+		:style=" 'color:' + text_color + ''  "
+	>{{bottom_text1}}</div>
+	
+	<div v-if="cols" class="row mt-3" :style=" 'color:' + text_color + ''  ">
+		<div v-if="cols[0]" class="col">
+			<div class="fs-sm"
+				:class = " transparent ? 'text-muted' : 'opacity-75' "
+				:style=" 'color:' + text_color + ''  "			
+			>{{cols[0]["title"]}}</div>
+			<h5 class="mb-0">{{cols[0]["value"]}}</h5>
+		</div>
+
+		<div v-if="cols[1]" class="col">
+			<div class="fs-sm"
+				:class = " transparent ? 'text-muted' : 'opacity-75' "
+				:style=" 'color:' + text_color + ''  "			
+			>{{cols[1]["title"]}}</div>
+			<h5 class="mb-0">{{cols[1]["value"]}}</h5>
+		</div>
+
+		<div v-if="cols[2]" class="col">
+			<div class="fs-sm"
+				:class = " transparent ? 'text-muted' : 'opacity-75' "
+				:style=" 'color:' + text_color + ''  "			
+			>{{cols[2]["title"]}}</div>
+			<h5 class="mb-0">{{cols[2]["value"]}}</h5>
+		</div>
+	</div>	
+	
+</div>
+
+
+`
+});
+
+

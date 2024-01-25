@@ -1,0 +1,249 @@
+"use strict";
+
+Vue.component('dev-line-chart', {
+	
+	
+	// ~~~~~~~~~~~~~~~~~~~~~~				properties
+	props: {
+		id: { type: String, default: "dev-line-chart" },
+		name: { default: "" },
+		data: { required: true },
+		account_id: { default: "" },
+		argumentField: { required: true },
+		title: { required: true },
+		
+	},
+	
+	
+	
+	
+	data: function () {
+		return {
+			raw_data: [],
+		}
+	},		
+	
+	
+	computed: {
+		
+		/*
+		data() {
+			let res = [];
+			
+			if ( this.raw_data.referal ) {
+				this.raw_data.referal.forEach( item => {
+					res.push({
+						time_to: moment( item.time_to ).toDate(),
+						referal: 1*item.avg_hashrate_24h,
+					});	
+				});
+			};
+
+			if ( this.raw_data.invited_acc ) {
+				this.raw_data.invited_acc.forEach( item => {
+					res.push({
+						time_to: moment( item.time_to ).toDate(),
+						invited_acc: 1*item.avg_hashrate_24h,
+					});	
+				});			
+			};
+			
+				
+			//console.info( res );
+			return res;
+		}
+		*/
+		
+	},
+	
+	
+	methods: {
+		
+		
+		createPlugin() {
+			
+			var self = this;
+			
+			$(() => {
+
+				DevExpress.localization.locale({ name: 'Русский', value: 'ru' });
+
+let chartOptions = {
+    palette: 'violet',
+    dataSource: self.data,
+    commonSeriesSettings: {
+      type: 'spline',
+      argumentField: self.argumentField,
+      label: {
+        format: {
+          type: 'month',
+        },
+      },	  
+      point: {
+        hoverMode: 'allArgumentPoints',
+      },	  
+    },
+    commonAxisSettings: {
+      grid: {
+        visible: true,
+      },
+    },
+    margin: {
+      bottom: 20,
+    },
+    series: self.series,
+	/*
+	series: [
+      { valueField: '2016', name: '2016' },
+      { valueField: '2017', name: '2017' },
+      { valueField: '2018', name: '2018' },
+    ],
+	*/
+    tooltip: {
+      enabled: true,
+    },
+    legend: {
+      verticalAlignment: 'top',
+      horizontalAlignment: 'right',
+    },
+	/*
+    argumentAxis: {
+      label: {
+        format: {
+          type: 'decimal',
+        },
+      },
+      allowDecimals: false,
+      axisDivisionFactor: 60,
+    },
+	*/
+    argumentAxis: {
+      label: {
+        format: {
+          type: 'decimal',
+        },
+      },
+    },	
+    crosshair: {
+      enabled: true,
+      color: '#949494',
+      width: 3,
+      dashStyle: 'dot',
+      label: {
+        visible: true,
+        backgroundColor: '#949494',
+        font: {
+          color: '#fff',
+          size: 12,
+        },
+      },
+    },	
+    title: self.title,
+  };
+/*
+let chartOptions = {
+	palette: 'violet',
+    dataSource: self.data,
+    commonSeriesSettings: {
+		argumentField: 'time_to',
+    },
+
+    bindingOptions: {
+      'commonSeriesSettings.type': 'spline',
+    },
+	
+    commonAxisSettings: {
+      grid: {
+        visible: true,
+      },
+    },
+
+    series: [
+      { valueField: 'referal', name:  "Как реферал", color: '#1db2f5' },
+	  { valueField: 'invited_acc', name: "Сгруппированные результаты", color: '#f5564a' },
+	  
+	  
+    ],
+	
+    margin: {
+      bottom: 20,
+    },	
+    tooltip: {
+      enabled: true,
+    },
+    legend: {
+      verticalAlignment: 'top',
+      horizontalAlignment: 'right',
+    },
+    argumentAxis: {
+      workdaysOnly: true,
+      label: {
+        format: 'shortDate',
+      },
+    },
+	
+    title: `Средний хэшрейт за 24ч (P) для ${self.name} за весь период`,
+  };
+  
+  */
+
+				$('#' + self.id).dxChart( chartOptions);
+			
+			
+			});			
+			
+			
+		}
+		
+	},
+
+	
+	// ~~~~~~~~~~~~~~~~~~~~~~				computed
+	mounted() {
+
+		if (document.readyState === "complete") {
+			this.createPlugin();
+		} else {
+			window.addEventListener("DOMContentLoaded", this.createPlugin());
+		}			
+		
+	},
+	
+	
+	created() {
+		//this.getChartData();
+		
+	},
+	
+	// ~~~~~~~~~~~~~~~~~~~~~~				watch
+	
+	watch: {
+		
+        "data": {
+            handler: function( new_value ) {
+				
+				
+				if ( new_value && new_value.series && new_value.data ) {
+					//console.info( "data changed" );
+					$(() => {
+						$( '#' + this.id ).dxChart('instance').option('dataSource', new_value.data);
+						$( '#' + this.id ).dxChart('instance').option('series', new_value.series);
+					})
+				};
+
+            },
+            deep: true
+        },
+
+		
+	},		
+	
+	// ~~~~~~~~~~~~~~~~~~~~~~				template
+	template: `
+		<div class="demo-container">
+			<div :id="id" style="height: 500px"></div>
+		</div>	
+	`
+});
+
+

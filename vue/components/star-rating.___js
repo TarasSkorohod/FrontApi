@@ -1,0 +1,72 @@
+"use strict";
+
+Vue.component('star-rating', {
+	
+	
+	// ~~~~~~~~~~~~~~~~~~~~~~				properties
+	props: {
+		value: { required: true },
+			
+
+		
+	},
+	
+	// ~~~~~~~~~~~~~~~~~~~~~~				data
+	data: function () {
+		return {
+
+		}
+	},
+	
+	// ~~~~~~~~~~~~~~~~~~~~~~				computed
+	computed: {
+		
+
+	},
+	
+	// ~~~~~~~~~~~~~~~~~~~~~~				methods
+	methods: {
+		
+		createPlugin() {
+	
+			
+		},
+		
+	},	
+	
+	mounted() {
+		
+		if (document.readyState === "complete") {
+			this.createPlugin();
+		} else {
+			window.addEventListener("DOMContentLoaded", this.createPlugin());
+		}
+		
+	},
+	
+	
+	
+	
+	// ~~~~~~~~~~~~~~~~~~~~~~				template
+	template: `
+
+
+<div class="hstack gap-1">
+	<i class="ph-star fs-base text-warning"></i>
+	<i class="ph-star fs-base text-warning"></i>
+	<i class="ph-star fs-base text-warning"></i>
+	<i class="ph-star fs-base text-warning"></i>
+	<i class="ph-star fs-base text-warning"></i>
+	<i class="ph-star fs-base text-warning"></i>
+	<i class="ph-star fs-base text-warning"></i>
+	<span class="text-muted ms-1">({{value}})</span>
+</div>
+
+
+
+
+
+`
+});
+
+

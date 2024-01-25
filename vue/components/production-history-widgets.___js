@@ -1,0 +1,193 @@
+"use strict";
+
+Vue.component('production-history-widgets', {
+	
+	
+	// ~~~~~~~~~~~~~~~~~~~~~~				properties
+	props: {
+	},
+	
+	// ~~~~~~~~~~~~~~~~~~~~~~				data
+	data: function () {
+		return {
+
+		}
+	},
+	
+	// ~~~~~~~~~~~~~~~~~~~~~~				computed
+	computed: {
+
+		history() {
+			return this.$store.getters.production_history;
+		},	
+
+		widgets() {
+			var 
+				res = {
+					"Панели" : { top_text0: "Панели", cols: [], curr_month_count: 0, prev_month0_count: 0, prev_month1_count: 0, prev_month2_count: 0, },
+					"Комплектующие" : { top_text0: "Комплектующие", cols: [], curr_month_count: 0, prev_month0_count: 0, prev_month1_count: 0, prev_month2_count: 0, },
+					"Пружины" : { top_text0: "Пружины", cols: [], curr_month_count: 0, prev_month0_count: 0, prev_month1_count: 0, prev_month2_count: 0, },
+					"Металлы" : { top_text0: "Металлы", cols: [], curr_month_count: 0, prev_month0_count: 0, prev_month1_count: 0, prev_month2_count: 0, },
+				},
+				curr_month = moment().format("YYYY-MM"), 
+				prev_month0 = moment(curr_month).subtract(1, 'months').format('YYYY-MM'),
+				prev_month1 = moment(curr_month).subtract(2, 'months').format('YYYY-MM'),
+				prev_month2 = moment(curr_month).subtract(3, 'months').format('YYYY-MM');
+			
+			//console.info( moment(curr_month).subtract(1, 'months').format('MMMM') );
+			
+			
+			//console.info( moment( curr_month ).format('MMMM') );
+			if ( !this.history ) return false;
+			
+			this.history.forEach( item => {			
+				let 
+					month = moment( item.date ).format("YYYY-MM");			
+				
+				if ( month == curr_month ) {
+					res[ item.title ][ "curr_month_count" ] += +item.count;
+				} else if ( month == prev_month0 ) {
+					res[ item.title ][ "prev_month0_count" ] += +item.count;
+				} else if ( month == prev_month1 ) {
+					res[ item.title ][ "prev_month1_count" ] += +item.count;
+				} else if ( month == prev_month2 ) {
+					res[ item.title ][ "prev_month2_count" ] += +item.count;
+				}		
+				
+			});	
+
+			// адаптируем надписи
+			for ( let title in res ) {
+				res[ title ][ "top_text1" ] = res[ title ][ "curr_month_count" ] + " од. за " + moment( curr_month ).format('MMMM');
+				res[ title ][ "value" ] =  res[ title ][ "curr_month_count" ] / res[ title ][ "prev_month0_count" ];
+				res[ title ]["cols"][0] = { title: "За " + moment( prev_month0 ).format('MMMM'), value: res[ title ][ "prev_month0_count" ] };
+				res[ title ]["cols"][1] = { title: "За " + moment( prev_month1 ).format('MMMM'), value: res[ title ][ "prev_month1_count" ] };
+				res[ title ]["cols"][2] = { title: "За " + moment( prev_month2 ).format('MMMM'), value: res[ title ][ "prev_month2_count" ] };
+			};
+			
+			
+			return res;	
+		},
+
+
+	},
+	
+	// ~~~~~~~~~~~~~~~~~~~~~~				methods
+	methods: {
+		
+		
+
+		
+	},	
+	
+	mounted() {
+
+
+
+		/*	
+		setTimeout( () => {
+			console.info( this.widgets );
+		}, 2000);		
+		*/
+		
+	},
+	
+	// ~~~~~~~~~~~~~~~~~~~~~~				template
+	template: `
+
+<div class="row">
+	<div class="col-sm-12">
+	
+		<div class="card">
+			<div class="card-header d-sm-flex align-items-sm-center py-sm-0">
+				<h6 class="py-sm-3 mb-sm-0">Кількість виготовленої продукції по цехам за місяць</h6>
+				<div class="ms-sm-auto my-sm-auto">
+				</div>
+			</div>
+			<div class="card-body">
+			
+			
+				
+				<div v-if="widgets" class="row">
+
+						<div class="col-sm-6 col-xl-3">
+
+							<rounded-progress-bar
+								id="widget_panel" 
+								
+								:top_text0 = " widgets['Панели']['top_text0'] "
+								:top_text1 = " widgets['Панели']['top_text1'] "
+								:cols = " widgets['Панели']['cols'] "
+								:value = " widgets['Панели']['value'] "
+								
+								bottom_text1 = "порівняно з попереднім місяцем"
+								icon = "ph-cards"
+								color = "#ef4444"
+								:transparent="true"
+							></rounded-progress-bar>
+
+						</div>
+						<div class="col-sm-6 col-xl-3">
+
+							<rounded-progress-bar
+								id="widget_compl" 
+								
+								:top_text0 = " widgets['Комплектующие']['top_text0'] "
+								:top_text1 = " widgets['Комплектующие']['top_text1'] "
+								:cols = " widgets['Комплектующие']['cols'] "
+								:value = " widgets['Комплектующие']['value'] "
+								
+								bottom_text1 = "порівняно з попереднім місяцем"
+								icon = "ph-diamonds-four"
+								color = "#0c83ff"
+								:transparent="false"
+							></rounded-progress-bar>
+
+						</div>
+						<div class="col-sm-6 col-xl-3">
+
+							<rounded-progress-bar
+								id="widget_pr" 
+								
+								:top_text0 = " widgets['Пружины']['top_text0'] "
+								:top_text1 = " widgets['Пружины']['top_text1'] "
+								:cols = " widgets['Пружины']['cols'] "
+								:value = " widgets['Пружины']['value'] "
+								
+								bottom_text1 = "порівняно з попереднім місяцем"
+								icon = "ph-faders"
+								color = "#5c6bc0"
+								:transparent="true"
+							></rounded-progress-bar>
+
+						</div>
+						<div class="col-sm-6 col-xl-3">
+
+							<rounded-progress-bar
+								id="widget_met" 
+								
+								:top_text0 = " widgets['Металлы']['top_text0'] "
+								:top_text1 = " widgets['Металлы']['top_text1'] "
+								:cols = " widgets['Металлы']['cols'] "
+								:value = " widgets['Металлы']['value'] "
+								
+								bottom_text1 = "порівняно з попереднім місяцем"
+								icon = "ph-coin"
+								color = "#059669"
+								:transparent="false"
+							></rounded-progress-bar>
+
+						</div>						
+
+				</div>	
+				
+		
+			</div>
+		</div>					
+	</div>
+</div>	
+	
+`
+});
+
+

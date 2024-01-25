@@ -1,0 +1,49 @@
+[v-cloak] { display:none; } 
+
+/* datatables */
+.dataTables_filter input {
+	margin-left: 10px;
+}
+
+.dataTables_length select {
+	margin-left: 10px;
+	margin-right: 10px;
+}
+
+
+tr.odd[data-status="reserved"] {
+	background-color: orange !important;
+}
+
+tr.even[data-status="reserved"] {
+	background-color: #ffca69 !important;
+}
+
+tr.odd[data-status="deleted"] {
+	background-color: #fbb9b9 !important;
+}
+
+tr.even[data-status="deleted"] {
+	background-color: #f99797 !important;
+}
+
+tr.odd[data-status="queue"] {
+	background-color: #b0ceff !important;
+}
+
+tr.even[data-status="queue"] {
+	background-color: #84aef2 !important;
+}
+
+.table {
+	color: black;	
+}
+
+
+
+.form-asterics {
+	padding-right: 3px;
+	color: #790404;
+	font-weight: bold;
+	font-size: 18px;
+}
