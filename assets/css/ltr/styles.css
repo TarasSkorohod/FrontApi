@@ -47,3 +47,10 @@ tr.even[data-status="queue"] {
 	font-weight: bold;
 	font-size: 18px;
 }
+.bb_color {
+	width: 800px;
+	margin: 0 auto;
+	background: white;
+
+}
+

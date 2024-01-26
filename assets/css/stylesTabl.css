@@ -1,4 +1,4 @@
-[v-cloak] { display:none; } 
+[v-cloak] { display:none; }
 
 /* datatables */
 .dataTables_filter input {
@@ -36,7 +36,7 @@ tr.even[data-status="queue"] {
 }
 
 .table {
-	color: black;	
+	color: black;
 }
 
 
@@ -46,4 +46,24 @@ tr.even[data-status="queue"] {
 	color: #790404;
 	font-weight: bold;
 	font-size: 18px;
+}
+
+
+.test{
+	display: flex;
+	justify-content: flex-start;
+	margin-top: 20px;
+}
+
+.btn_green {
+	width: 285px;
+	height: 56px;
+	border-radius: 18px;
+	border: none;
+	color: white;
+	font-size: 14px;
+	background: #028891;
+	cursor: pointer;
+	font-weight: bold;
+
 }

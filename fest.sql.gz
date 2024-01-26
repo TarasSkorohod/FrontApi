@@ -1,0 +1,445 @@
+-- phpMyAdmin SQL Dump
+-- version 5.1.3
+-- https://www.phpmyadmin.net/
+--
+-- Хост: localhost
+-- Время создания: Янв 20 2024 г., 23:38
+-- Версия сервера: 5.5.62-log
+-- Версия PHP: 7.3.2
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- База данных: `fest`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `companies`
+--
+
+DROP TABLE IF EXISTS `companies`;
+CREATE TABLE `companies` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `title` varchar(255) NOT NULL DEFAULT '',
+  `domain` varchar(255) DEFAULT NULL,
+  `phone` varchar(45) DEFAULT NULL,
+  `enabled` set('yes','no') DEFAULT NULL,
+  `head` varchar(512) DEFAULT NULL COMMENT 'Назва фірми',
+  `email` varchar(255) DEFAULT NULL COMMENT 'E-mail',
+  `address` varchar(1024) DEFAULT NULL COMMENT 'Магазин / Виробництво',
+  `telegram` varchar(127) DEFAULT NULL,
+  `avatar` mediumtext
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `companies`
+--
+
+INSERT INTO `companies` (`id`, `title`, `domain`, `phone`, `enabled`, `head`, `email`, `address`, `telegram`, `avatar`) VALUES
+(20, 'Київстар ', 'http://kyivstar.ua/', NULL, NULL, 'Игорь Литовченко ', NULL, 'Украина: Киев', NULL, '[{\"name\":\"pnziDwdgyePG.png\",\"size\":7763,\"title\":\"киевстар\",\"file\":\"/uploads/pnziDwdgyePG.png\",\"type\":\"image/png\"}]'),
+(21, 'Vodafone', 'http://vodafone.ua/', NULL, NULL, 'Укртелеком, KPN, TDC и Deutsche Telekom', NULL, NULL, NULL, '[{\"name\":\"GUZvc9Qs2f8E.png\",\"size\":2844,\"title\":\"vodafone\",\"file\":\"/uploads/GUZvc9Qs2f8E.png\",\"type\":\"image/png\"}]'),
+(22, 'МЕТРО Кеш енд Кері Україна', 'https://www.metro.ua/', NULL, NULL, 'Олена Вдовиченко', NULL, 'Німеччина, Дюссельдорф', NULL, '[{\"name\":\"rHZQL2DfNlRw.jpg\",\"size\":160218,\"title\":\"800px-METRO_UA[1]\",\"file\":\"/uploads/rHZQL2DfNlRw.jpg\",\"type\":\"image/jpeg\"}]'),
+(23, 'АТБ-Маркет', 'http://www.atbmarket.com/', NULL, NULL, ' Геннадию Буткевичу, Евгению Ермакову и Виктору Карачуну', NULL, 'Днiпро', NULL, '[{\"name\":\"PKRCDfZAc3Ny.jpg\",\"size\":7556,\"title\":\"345557802_1378791079357431_1778563542373686938_n\",\"file\":\"/uploads/PKRCDfZAc3Ny.jpg\",\"type\":\"image/jpeg\"}]');
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `modifications`
+--
+
+DROP TABLE IF EXISTS `modifications`;
+CREATE TABLE `modifications` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `entity` varchar(32) NOT NULL DEFAULT '',
+  `user_id` int(10) UNSIGNED NOT NULL DEFAULT '0',
+  `method` set('patch','post','delete') DEFAULT NULL,
+  `row_id` int(10) UNSIGNED DEFAULT NULL,
+  `time_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `modification_logs`
+--
+
+DROP TABLE IF EXISTS `modification_logs`;
+CREATE TABLE `modification_logs` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `field` varchar(32) NOT NULL DEFAULT '',
+  `field_before` varchar(127) NOT NULL DEFAULT '',
+  `field_after` varchar(127) NOT NULL DEFAULT '',
+  `modifications_id` int(10) UNSIGNED NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `rates`
+--
+
+DROP TABLE IF EXISTS `rates`;
+CREATE TABLE `rates` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `records_id` int(10) UNSIGNED NOT NULL DEFAULT '0',
+  `text` text NOT NULL,
+  `rate` tinyint(3) UNSIGNED NOT NULL DEFAULT '0',
+  `users_id` int(10) UNSIGNED NOT NULL DEFAULT '0',
+  `time_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `rates`
+--
+
+INSERT INTO `rates` (`id`, `records_id`, `text`, `rate`, `users_id`, `time_created`) VALUES
+(1, 1, '6666666666666', 6, 1, '2023-11-22 22:26:58'),
+(2, 1, '5555', 5, 3, '2023-11-22 22:40:05'),
+(3, 1, '55555555555555555555555', 5, 9, '2023-11-22 22:57:46'),
+(9, 7, '', 3, 1, '2023-11-23 02:45:21'),
+(12, 10, '', 1, 1, '2023-11-23 03:06:55'),
+(13, 12, '', 4, 3, '2023-11-23 03:11:16'),
+(14, 11, 'Супер', 7, 1, '2023-11-25 01:20:25'),
+(15, 13, 'Все норм', 6, 3, '2023-11-25 01:24:23'),
+(16, 13, '', 5, 1, '2023-12-19 03:03:26');
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `records`
+--
+
+DROP TABLE IF EXISTS `records`;
+CREATE TABLE `records` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `title` varchar(255) NOT NULL DEFAULT '',
+  `users_id` int(10) UNSIGNED NOT NULL DEFAULT '0',
+  `avatar` mediumtext,
+  `time_record` datetime DEFAULT NULL,
+  `duration` int(10) UNSIGNED DEFAULT NULL,
+  `phone_from` varchar(45) DEFAULT NULL,
+  `phone_to` varchar(45) DEFAULT NULL,
+  `description` text,
+  `time_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `files_count` tinyint(3) UNSIGNED NOT NULL DEFAULT '0',
+  `time_stop_vote` datetime DEFAULT NULL,
+  `status` set('active','finish') NOT NULL DEFAULT 'active',
+  `rate` int(10) UNSIGNED NOT NULL DEFAULT '0',
+  `votes_count` int(10) UNSIGNED NOT NULL DEFAULT '0',
+  `avg_rate` decimal(10,2) NOT NULL DEFAULT '0.00'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `records`
+--
+
+INSERT INTO `records` (`id`, `title`, `users_id`, `avatar`, `time_record`, `duration`, `phone_from`, `phone_to`, `description`, `time_created`, `files_count`, `time_stop_vote`, `status`, `rate`, `votes_count`, `avg_rate`) VALUES
+(1, 'Запис 1', 7, '[{\"name\":\"I75d_X4ij0qK.jpg\",\"size\":118015,\"title\":\"avatar-gen115b84f284677e28b0e464fcb49a0497\",\"file\":\"/uploads/I75d_X4ij0qK.jpg\",\"type\":\"image/jpeg\"},{\"name\":\"1CH9WTo3qakE.jpg\",\"size\":113604,\"title\":\"avatar-gen73dffb742850bb32b914f1e65385b455\",\"file\":\"/uploads/1CH9WTo3qakE.jpg\",\"type\":\"image/jpeg\"},{\"name\":\"650ipyHmkRGL.mp3\",\"size\":6018739,\"title\":\"Priglashenie-na-meropriyatie.-IT-sfera\",\"file\":\"/uploads/650ipyHmkRGL.mp3\",\"type\":\"audio/mpeg\"},{\"name\":\"aQR7yPpLqk0e.mp3\",\"size\":3334149,\"title\":\"11-Strah-comp\",\"file\":\"/uploads/aQR7yPpLqk0e.mp3\",\"type\":\"audio/mpeg\"}]', '2023-11-10 12:35:00', 620, '+380967584538', '+380958312121', 'Невдалий дзвінок', '2023-11-25 01:17:44', 4, NULL, 'active', 16, 3, '5.33'),
+(3, 'Запис 2', 8, '[{\"name\":\"KosIYW1nGg0R.mp3\",\"size\":2683387,\"title\":\"1-ITM-Derevlev\",\"file\":\"/uploads/KosIYW1nGg0R.mp3\",\"type\":\"audio/mpeg\"},{\"name\":\"RlWOJsfXGvbH.mp3\",\"size\":1476319,\"title\":\"1-Vendex-retail\",\"file\":\"/uploads/RlWOJsfXGvbH.mp3\",\"type\":\"audio/mpeg\"}]', '2023-11-14 14:00:00', 125, '+380965499312', '+380501235178', NULL, '2023-11-25 01:18:01', 2, NULL, 'active', 0, 0, '0.00'),
+(4, 'Запис 3', 7, '[{\"name\":\"cmb0j5LypiOU.mp3\",\"size\":889087,\"title\":\"2-CDS-group\",\"file\":\"/uploads/cmb0j5LypiOU.mp3\",\"type\":\"audio/mpeg\"},{\"name\":\"dPATIKBH43mJ.mp3\",\"size\":1385622,\"title\":\"2-ITM-Kas-lab\",\"file\":\"/uploads/dPATIKBH43mJ.mp3\",\"type\":\"audio/mpeg\"},{\"name\":\"d_yTLuVvkY5K.pdf\",\"size\":92345,\"title\":\"1\",\"file\":\"/uploads/d_yTLuVvkY5K.pdf\",\"type\":\"application/pdf\"}]', '2023-11-13 22:35:00', 400, '+3809847684834', '+30506712397', NULL, '2023-11-25 01:18:11', 3, NULL, 'active', 0, 0, '0.00'),
+(7, 'Запис 7', 8, '[{\"name\":\"NvxYAO6QfDS_.mp3\",\"size\":2889022,\"title\":\"7-ITM-Entera\",\"file\":\"/uploads/NvxYAO6QfDS_.mp3\",\"type\":\"audio/mpeg\"},{\"name\":\"CH0UDZxJiv2Q.mp3\",\"size\":1890936,\"title\":\"7-Moscow-tur\",\"file\":\"/uploads/CH0UDZxJiv2Q.mp3\",\"type\":\"audio/mpeg\"}]', NULL, NULL, NULL, NULL, NULL, '2023-11-25 01:19:58', 2, NULL, 'active', 3, 1, '3.00'),
+(10, 'Запис 5', 10, '[{\"name\":\"bo3wBnYDg_e1.mp3\",\"size\":2891948,\"title\":\"4-Zvezda\",\"file\":\"/uploads/bo3wBnYDg_e1.mp3\",\"type\":\"audio/mpeg\"},{\"name\":\"pQcZWh8EmK4N.pdf\",\"size\":1371239,\"title\":\"drylab\",\"file\":\"/uploads/pQcZWh8EmK4N.pdf\",\"type\":\"application/pdf\"},{\"name\":\"BZ9i2RS85Dow.pdf\",\"size\":469513,\"title\":\"file-example_PDF_500_kB\",\"file\":\"/uploads/BZ9i2RS85Dow.pdf\",\"type\":\"application/pdf\"}]', NULL, NULL, NULL, NULL, NULL, '2023-11-24 02:47:05', 3, NULL, 'active', 1, 1, '1.00'),
+(11, 'Запис 6', 10, '[{\"name\":\"rDZwnAqhKa1t.mp3\",\"size\":4769003,\"title\":\"5-ITM-Sinteka\",\"file\":\"/uploads/rDZwnAqhKa1t.mp3\",\"type\":\"audio/mpeg\"},{\"name\":\"Q_oyBfjUcvdh.mp3\",\"size\":916672,\"title\":\"5-Zvezda\",\"file\":\"/uploads/Q_oyBfjUcvdh.mp3\",\"type\":\"audio/mpeg\"},{\"name\":\"nPCUX0krZybe.mp3\",\"size\":3211269,\"title\":\"6-ITM-Entera\",\"file\":\"/uploads/nPCUX0krZybe.mp3\",\"type\":\"audio/mpeg\"}]', NULL, NULL, NULL, NULL, NULL, '2023-11-25 01:20:25', 3, NULL, 'active', 7, 1, '7.00'),
+(12, 'Запис 4', 10, '[{\"name\":\"auOdxf4N6nYh.jpg\",\"size\":103896,\"title\":\"avatar-gen11737bbe76296550f669defadda12626[1]\",\"file\":\"/uploads/auOdxf4N6nYh.jpg\",\"type\":\"image/jpeg\"},{\"name\":\"BWNHGjb4uIx9.jpg\",\"size\":103896,\"title\":\"avatar-gen11737bbe76296550f669defadda12626[2]\",\"file\":\"/uploads/BWNHGjb4uIx9.jpg\",\"type\":\"image/jpeg\"}]', '2023-11-15 12:45:00', 29, '+380951936512', '+380969821367', NULL, '2023-11-25 00:39:55', 2, NULL, 'active', 4, 1, '4.00'),
+(13, 'Запис 8', 7, '[{\"name\":\"6F_9EKDTIqu3.mp3\",\"size\":3137708,\"title\":\"8-Servise-klaud\",\"file\":\"/uploads/6F_9EKDTIqu3.mp3\",\"type\":\"audio/mpeg\"},{\"name\":\"pTwumeKa7L_9.mp3\",\"size\":2206077,\"title\":\"9-Servise-klaud\",\"file\":\"/uploads/pTwumeKa7L_9.mp3\",\"type\":\"audio/mpeg\"},{\"name\":\"4UTmfFD89Aqr.mp3\",\"size\":8957372,\"title\":\"10-Simagino\",\"file\":\"/uploads/4UTmfFD89Aqr.mp3\",\"type\":\"audio/mpeg\"},{\"name\":\"AbkiEqj9uDze.mp3\",\"size\":3334149,\"title\":\"11-Strah-comp\",\"file\":\"/uploads/AbkiEqj9uDze.mp3\",\"type\":\"audio/mpeg\"}]', '2023-11-03 23:45:00', 400, '0979834572', '0689993471', NULL, '2023-12-19 03:03:46', 4, NULL, 'active', 11, 2, '5.50');
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `shops`
+--
+
+DROP TABLE IF EXISTS `shops`;
+CREATE TABLE `shops` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `address` varchar(255) NOT NULL DEFAULT '',
+  `shedule` varchar(255) NOT NULL DEFAULT '',
+  `phone1` varchar(45) NOT NULL DEFAULT '',
+  `phone2` varchar(45) NOT NULL DEFAULT '',
+  `posx` varchar(45) DEFAULT NULL,
+  `posy` varchar(45) DEFAULT NULL,
+  `companies_id` int(10) UNSIGNED NOT NULL DEFAULT '0',
+  `cities_id` int(10) UNSIGNED NOT NULL DEFAULT '0',
+  `open_date` datetime DEFAULT NULL,
+  `area_shop` float DEFAULT NULL,
+  `uploads_id` int(10) UNSIGNED DEFAULT NULL,
+  `status` set('У роботі','Заброньовано','Розглядається','Видалено') NOT NULL DEFAULT 'У роботі',
+  `booking_time` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `shops`
+--
+
+INSERT INTO `shops` (`id`, `address`, `shedule`, `phone1`, `phone2`, `posx`, `posy`, `companies_id`, `cities_id`, `open_date`, `area_shop`, `uploads_id`, `status`, `booking_time`) VALUES
+(2, 'Ludwika Kondratowicza 37, 03-285 Warszawa', 'Пн-Пт 9:00-21:00, Сб 9:00-20:00', '666717109', '', '52.292867554393396', '21.04461343988394', 14, 3, NULL, NULL, NULL, 'У роботі', NULL),
+(3, 'Marcina Kasprzaka 31', 'Пн-Пт 9:00-21:00, Сб 9:00-20:00', '666717109', '', '52.22739170235975', '20.953258568716493', 14, 3, NULL, NULL, NULL, 'У роботі', NULL),
+(4, 'Kaliny Jędrusik 9, 01-748 Warszawa', 'Пн-Пт 9:00-21:00, Сб 9:00-20:00', '+48579886889', '', '52.2567536458321', '20.966721697553414', 2, 3, '2022-05-17 00:00:00', NULL, NULL, 'У роботі', NULL),
+(5, 'Aleja Rzeczypospolitej 18, 02-972 Warszawa', 'Пн-Пт 9:00-21:00, Сб 9:00-20:00', '+48579886889', '', '52.16519775755442', '21.070081068713616', 2, 3, '2022-05-17 00:00:00', NULL, NULL, 'У роботі', NULL),
+(6, 'Dereniowa 10, 02-776 Warszawa', 'Пн-Пт 9:00-21:00, Сб 9:00-20:00', '+48727824122', '', '52.14615272569911', '21.043814497548315', 4, 3, '2022-07-12 00:00:00', NULL, NULL, 'У роботі', NULL),
+(7, 'Gen. Tadeusza Pełczyńskiego 16, 01-471 Warszawa', '', '723268021', '', '52.242242167313755', '20.907561497552603', 3, 3, '2022-08-01 00:00:00', NULL, NULL, 'У роботі', NULL),
+(8, 'Targowa 23, 03-728 Warszawa', '', '+48723268021', '', '52.24964054572997', '21.041651897552917', 3, 3, '2022-08-01 00:00:00', NULL, NULL, 'У роботі', NULL),
+(9, 'Tamka 18, 00-349 Warszawa', '', '723268021', '', '52.23779075469415', '21.026782968716887', 3, 3, '2022-08-01 00:00:00', NULL, NULL, 'У роботі', NULL),
+(10, 'Puławska 186, 02-670 Warszawa', '', '+48723268021', '', '52.18123717891604', '21.022264461579123', 3, 3, '2022-08-01 00:00:00', NULL, NULL, 'У роботі', NULL),
+(11, 'Aleja Komisji Edukacji Narodowej 24, 02-797 Warszawa', '', '+48727824122', '', '52.13444696223432', '21.063476197547757', 4, 3, '2022-07-12 00:00:00', NULL, NULL, 'У роботі', NULL),
+(12, 'Puławska 427, 02-801 Warszawa', '', '790854965', '', '52.14250446484468', '21.023734141725605', 12, 3, '2023-01-10 00:00:00', NULL, NULL, 'У роботі', NULL),
+(13, 'Jana Kazimierza 25, 01-248 Warszawa', '', '', '', '52.224187694034484', '20.94455356871638', 16, 3, '2023-01-19 00:00:00', NULL, NULL, 'У роботі', NULL),
+(14, 'Adama Naruszewicza 30, 02-627 Warszawa', 'Пн-Пт 9:00-21:00, Сб 9:00-20:00', '+48886952783', '', '52.19146823149712', '21.016799758918435', 15, 3, '2022-11-12 00:00:00', NULL, NULL, 'У роботі', NULL),
+(15, 'Posag 7 Panien 14, 02-495 Warszawa', '', '+48452240191', '', '52.20504577282922', '20.880980382208957', 13, 3, '2022-11-28 00:00:00', NULL, NULL, 'У роботі', NULL),
+(16, 'Legnicka 17, 53-656 Wrocław', '', '+48788043509', '', '51.11320972162132', '17.017844815342027', 1, 5, '2022-03-21 00:00:00', NULL, NULL, 'У роботі', NULL),
+(17, 'Zwycięska 9/23, 53-033 Wrocław', '', '+48788043509', '', '51.06052240553826', '17.00334026938891', 1, 5, '2022-03-21 00:00:00', NULL, NULL, 'У роботі', NULL),
+(18, 'Ameriga Vespucciego 26c, Wrocław', '', '+48788043509', '', '51.10690739768456 ', '17.12348960968788', 1, 5, '2022-03-21 00:00:00', NULL, NULL, 'У роботі', NULL),
+(19, 'Swobodna 37, 50-088 Wrocław', '', '+48788043509', '', '51.10024331912423 ', '17.025222767358343', 1, 5, '2022-03-21 00:00:00', NULL, NULL, 'У роботі', NULL),
+(20, 'Franciszka Kniaźnina 1/8, 31-637 Kraków', '', '+48518742313', '', '50.09148438660111 ', '19.988496396121086', 11, 4, '2022-06-04 00:00:00', NULL, NULL, 'У роботі', NULL),
+(21, 'Osiedle Kolorowe 10, 31-939 Kraków', '', '+48518841784', '', '50.07324298874162 ', '20.02859376728427', 11, 4, '2022-06-04 00:00:00', NULL, NULL, 'У роботі', NULL),
+(22, 'Wielicka 79, 33-332 Kraków', '', '+48518841784', '', '50.033203986930296 ', '19.97014152495237', 11, 4, '2022-06-04 00:00:00', NULL, NULL, 'У роботі', NULL),
+(23, 'Fredry 3, 61-701 Poznań', '9 - 21 ', '+48883736772', '', '52.40876239710926 ', '16.920845251124156', 9, 2, '2023-02-27 00:00:00', 200, 508, 'У роботі', NULL),
+(25, 'Władysława Umińskiego 16e 01-471 Warszawa', '', '723268021', '', '52.22727939990922', '21.099063935404324', 3, 3, '2022-08-01 00:00:00', NULL, NULL, 'У роботі', NULL),
+(26, 'Batalionów Chłopskich 78 01-471 Warszawa', '', '723268021', '', '52.23193980386834', '20.894547622878964', 3, 3, '2022-08-01 00:00:00', NULL, NULL, 'У роботі', NULL),
+(27, 'Rakowska 8, 02-237 Warszawa', 'Пн-Пт 9:00-21:00, Сб 9:00-20:00', '+48886952783', '', '52.197491525417085', '20.952697874290543', 15, 3, NULL, NULL, NULL, 'У роботі', NULL),
+(28, 'Kłobucka 6c, 02-699 Warszawa', 'Пн-Пт 9:00-21:00, Сб 9:00-20:00', '+48886952783', '', '52.16110670483648', '20.99305664775914', 15, 3, NULL, NULL, NULL, 'У роботі', NULL),
+(29, 'Powstańców Śląskich 106, Warszawa', 'Пн-Пт 9:00-21:00, Сб 9:00-20:00', '', '', '52.255472885630816', '20.919156268717792', 6, 3, NULL, NULL, NULL, 'У роботі', NULL),
+(30, 'Pulawska 427, CH Ursynow', '', '', '', '52.14151480546061', '21.026759484656864', 12, 3, NULL, NULL, NULL, 'У роботі', NULL),
+(31, 'Aleje Jerozolimskie 148, Reduta', '', '', '', '52.21225368566668', '20.95124849772437', 12, 3, NULL, NULL, NULL, 'У роботі', NULL),
+(32, 'Polczynska 4, Fort Wola', '', '', '', '52.22370583930828', '20.928225814918534', 12, 3, NULL, NULL, NULL, 'У роботі', NULL),
+(33, 'Powstańców śląskich 126, Galeria Bemowo', '', '', '', '52.26449769807921', '20.930104968891065', 12, 3, NULL, NULL, NULL, 'У роботі', NULL),
+(34, 'Czapelska 25', '', '', '', '52.24268988348998', '21.085645340054256', 12, 3, NULL, NULL, NULL, 'У роботі', NULL),
+(35, 'ul .Posag 7 Panien 14 lok.u3', '', '', '', '52.20502604772428', '20.880980382380898', 13, 3, NULL, NULL, NULL, 'У роботі', NULL),
+(36, 'Warszawska 58c lok.16', '', '', '', '52.19583777083352', '20.863424813066633', 13, 3, NULL, NULL, NULL, 'У роботі', NULL),
+(37, 'Sobieskiego 112 lok.u5', '', '', '', '52.20121313293116', '21.036572668888052', 13, 3, NULL, NULL, NULL, 'У роботі', NULL),
+(38, 'Obozowo 22', '', '', '', '52.246308640582754', '20.963273884929418', 18, 3, NULL, NULL, NULL, 'У роботі', NULL),
+(39, 'ul. Cybernetyki 3b', 'Пн-Пт 9:00-21:00, Сб 9:00-20:00', '', '', '52.17508522562188', '20.999354568886694', 46, 3, NULL, 120, NULL, 'У роботі', NULL),
+(41, 'Woronicza 80', '', '', '', '52.19059312091562', '20.98715612655899', 16, 3, NULL, NULL, NULL, 'У роботі', NULL),
+(42, 'Aleja KEN 83', '', '', '', '52.15486701410197', '21.03560332655727', 16, 3, NULL, NULL, NULL, 'У роботі', NULL),
+(43, 'Leona Berensona 12', '', '', '', '52.324660002578575', '21.05476796889422', 16, 3, NULL, NULL, NULL, 'У роботі', NULL),
+(44, 'Radzyminska 12', '', '', '', '52.256570652879184', '21.050612397726464', 16, 3, NULL, NULL, NULL, 'У роботі', NULL),
+(45, 'Grójecka 186', '', '', '', '52.20163967848819', '20.96713964005224', 16, 3, NULL, NULL, NULL, 'У роботі', NULL),
+(46, 'Erazma z Zakroczymia 2a', '', '', '', '52.31992697457365', '20.953384440058098', 16, 3, NULL, NULL, NULL, 'У роботі', NULL),
+(47, 'Konstruktorska 5c', '', '', '', '52.18542419702104', '20.994826968887256', 16, 3, NULL, NULL, NULL, 'У роботі', NULL),
+(50, 'Pulawska 2', '', '', '', '52.21269065452763', '21.01977749772429', 4, 3, NULL, NULL, NULL, 'У роботі', NULL),
+(51, 'Franciszka Kniaźnina 1/8', '', '', '', '50.09151191951244', '19.988550041799176', 11, 4, NULL, NULL, NULL, 'У роботі', NULL),
+(55, 'Prądnicka 65', '', '', '', '50.08656239861354', '19.938950112963138', 20, 4, NULL, NULL, NULL, 'У роботі', NULL),
+(57, 'Wrocławska 53B, 30-011 Kraków', '', '', '', '50.07996819961473', '19.923893839948075', 21, 4, NULL, NULL, NULL, 'У роботі', NULL),
+(58, ' Francesco Nullo 28', '', '', '', '50.06424673014909', '19.966156768783073', 22, 4, NULL, NULL, NULL, 'У роботі', NULL),
+(59, 'Legnicka 17', '', '', '', '51.11322653181292', '17.01781262650577', 1, 5, NULL, NULL, NULL, 'У роботі', NULL),
+(61, 'gen. Józefa Hallera 106', '', '', '', '51.09029817524648', '16.99231439766891', 1, 5, NULL, NULL, NULL, 'У роботі', NULL),
+(64, 'Bierutowska 7', 'Пн-Пт 9:00-21:00, Сб 9:00-20:00', '', '', '51.14787750545708', '17.11694272650749', 1, 5, NULL, NULL, NULL, 'У роботі', NULL),
+(65, 'Krasnicka 27', '', '', '', '51.24746152469509', '22.51639898233341', 23, 6, NULL, NULL, NULL, 'У роботі', NULL),
+(66, 'Krakowskie Przedmejscie 57', '', '', '', '51.24788411344769', '22.551962168840802', 24, 6, NULL, NULL, NULL, 'У роботі', NULL),
+(67, 'Aleja Unii lubelskiej 2', '', '', '', '51.25006238774721', '22.576161526512465', 24, 6, NULL, NULL, NULL, 'У роботі', NULL),
+(68, 'ul. Józefa Ignacego Kraszewskiego 43', '', '', '', '52.163500736287226', '20.806581184901553', 26, 8, NULL, NULL, NULL, 'У роботі', NULL),
+(69, 'Henryka Sienkiewicza 70', '', '', '', '50.87346655558409', '20.621540868822443', 1, 9, NULL, NULL, NULL, 'У роботі', NULL),
+(70, 'aleja Jana Pawła II 3A', '', '', '', '54.397171569814695', '18.60388938434206', 27, 10, NULL, NULL, NULL, 'У роботі', NULL),
+(71, 'ulica Krzemowa 1', '', '', '', '54.32519379839467', '18.617885997831', 27, 10, NULL, NULL, NULL, 'У роботі', NULL),
+(72, 'al. Grunwaldzka 76/78', '', '', '', '54.377204656280355', '18.60888555365478', 27, 10, NULL, NULL, NULL, 'У роботі', NULL),
+(73, 'ul.Trubadurów 8', '', '', '', '54.37396866312152', '18.626832026669323', 28, 10, NULL, NULL, NULL, 'У роботі', NULL),
+(74, 'Ul.Obrońców Wybrzeża 9', '', '', '', '54.4093928607617', '18.595961684342633', 28, 10, NULL, NULL, NULL, 'У роботі', NULL),
+(75, 'ul.1 Mają, 41', '', '', '', '50.258906599805314', '19.044600997628308', 29, 11, NULL, NULL, NULL, 'У роботі', NULL),
+(76, 'Ludowa 19A', '', '', '', '50.317313183539646', '19.167610926466892', 45, 12, NULL, 120, NULL, 'У роботі', NULL),
+(77, 'Toruń, ul.Szosa Lubicka 12/LH2', '', '', '', '53.018534936358215', '18.640023653585853', 30, 13, NULL, NULL, NULL, 'У роботі', NULL),
+(78, 'Osiedle Piastowskie 17', '', '', '', '52.39659346526506', '16.9450481265693', 31, 14, NULL, NULL, NULL, 'У роботі', NULL),
+(79, 'Poznań, ul. Dąbrowskiego, 88', '', '', '', '52.41418288035796', '16.896448768898555', 32, 14, NULL, NULL, NULL, 'У роботі', NULL),
+(80, 'ul. Fredry 3', '', '', '', '52.408697010385666', '16.920866726569955', 9, 14, NULL, NULL, NULL, 'У роботі', NULL),
+(81, 'Ignacego Mościckiego 13.lok.3A 42-218 Częstochowa', '', '', '', '50.82045560737458', '19.097124684163006', 1, 15, NULL, NULL, NULL, 'У роботі', NULL),
+(82, 'Gdańska 74', '', '', '', '53.13248868953883', '18.010598784277793', 33, 16, NULL, NULL, NULL, 'У роботі', NULL),
+(83, 'Płac wolności, 6', '', '', '', '50.0397436128811', '22.00783622645357', 34, 18, NULL, NULL, NULL, 'У роботі', NULL),
+(85, 'Świdnica  ul. Rynek 16', 'Пн-Пт 9:00-21:00, Сб 9:00-20:00', '+3', '', '50.84232534258457', '16.486741111609867', 44, 19, NULL, 120, NULL, 'У роботі', NULL),
+(86, ' Wojska Polskiego 207', 'Пн-Пт 9:00-21:00, Сб 9:00-20:00', '+3', '', '50.80756202841286', '19.131541267428595', 43, 15, NULL, 20, NULL, 'У роботі', NULL),
+(87, 'Aleja Wyzwolenia 9, lok.6', 'Пн-Пт 9:00-21:00, Сб 9:00-20:00', '+3', '', '50.8393426646151', '19.127204543131963', 43, 15, NULL, 25, NULL, 'Заброньовано', '2022-10-23 00:00:00'),
+(88, 'Brodzinskiego 2', 'Пн-Пт 9:00-21:00, Сб 9:00-20:00', '+3', '', '49.81517405132205', '19.01919036735774', 40, 20, NULL, 120, NULL, 'Видалено', NULL),
+(89, 'Antoniukowska, 56 ', 'Пн-Пт 9:00-21:00, Сб 9:00-20:00', '+3', '', '53.145228038082855', '23.132611625271185', 39, 21, NULL, 140, NULL, 'Розглядається', NULL),
+(90, 'Zijdstraat 1a, Aalsmeer', 'Пн-Пт 9:00-21:00, Сб 9:00-20:00', '', '', '52.2698632088269', '4.746378441209592', 7, 22, NULL, 120, NULL, 'Розглядається', NULL),
+(91, 'Zijdstraat 1a, Aalsmeer', 'Пн-Пт 9:00-21:00, Сб 9:00-20:00', '1111', '', '52.2698632088269', '4.746378441209592', 47, 22, NULL, 100, NULL, 'Заброньовано', '2023-10-23 00:00:00'),
+(92, 'Antoniukowska, 56 ', 'Пн-Пт 9:00-21:00, Сб 9:00-20:00', '2222', '', '53.145228038082855', '23.132611625271185', 47, 21, NULL, 200, NULL, 'Заброньовано', '2023-10-22 00:00:00'),
+(111, 'ulica Rembielińska, 03-352, Bródno, Targówek, Warszawa, Woj. Mazowieckie', '', '', '', '52.29219183885', '21.029205322266', 47, 3, NULL, NULL, NULL, 'Заброньовано', '2023-10-23 08:08:14'),
+(112, 'ulica Modlińska 6D, 03-216, Białołęka-dzielnica, Warszawa, Mazowieckie', '', '', '', '52.292979287469', '21.007146835327', 47, 3, NULL, NULL, NULL, 'Заброньовано', '2023-10-23 08:08:14');
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `users`
+--
+
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE `users` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `login` varchar(64) NOT NULL DEFAULT '',
+  `password` varchar(64) NOT NULL DEFAULT '',
+  `name` varchar(64) NOT NULL DEFAULT '',
+  `email` varchar(64) DEFAULT NULL,
+  `role` set('artist','admin','customer','jury') NOT NULL DEFAULT 'customer',
+  `address` varchar(127) DEFAULT NULL,
+  `phone` varchar(64) DEFAULT NULL,
+  `auth_code` varchar(45) DEFAULT NULL,
+  `ip` varchar(64) DEFAULT NULL,
+  `avatar` mediumtext,
+  `companies_id` int(10) UNSIGNED DEFAULT NULL,
+  `last_time_updated` datetime DEFAULT NULL,
+  `payment` set('no','my','all') NOT NULL DEFAULT 'no'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `users`
+--
+
+INSERT INTO `users` (`id`, `login`, `password`, `name`, `email`, `role`, `address`, `phone`, `auth_code`, `ip`, `avatar`, `companies_id`, `last_time_updated`, `payment`) VALUES
+(1, 'admin', '12345', 'Dmitro Webmonte12', 'dwebmonte@gmail.com', 'admin', 'Ukraine, Lviv', NULL, '417', '127.0.0.1', '\"\\\"[{\\\\\\\"name\\\\\\\":\\\\\\\"JQ2zg38dsDOc.jpg\\\\\\\",\\\\\\\"size\\\\\\\":7034,\\\\\\\"title\\\\\\\":\\\\\\\"Без имени\\\\\\\",\\\\\\\"file\\\\\\\":\\\\\\\"/uploads/JQ2zg38dsDOc.jpg\\\\\\\",\\\\\\\"type\\\\\\\":\\\\\\\"image/jpeg\\\\\\\"}]\\\"\"', NULL, NULL, 'no'),
+(3, 'jury1', '', 'Оксана Михайлівна Кравченко', 'jury1@gmail.com', 'jury', NULL, '+3809856783471', '179', '127.0.0.1', '[{\"name\":\"qaht6rXZ_uz5.jpg\",\"size\":113604,\"title\":\"avatar-gen73dffb742850bb32b914f1e65385b455\",\"file\":\"/uploads/qaht6rXZ_uz5.jpg\",\"type\":\"image/jpeg\"}]', NULL, NULL, 'no'),
+(5, 'jury2', '', 'Кравчук Ярослава Михайлiвна', 'jury2@gmail.com', 'jury', NULL, '+380679451234', NULL, NULL, '[{\"name\":\"neSPIpGktCAv.jpg\",\"size\":118015,\"title\":\"avatar-gen115b84f284677e28b0e464fcb49a0497\",\"file\":\"/uploads/neSPIpGktCAv.jpg\",\"type\":\"image/jpeg\"}]', NULL, NULL, 'no'),
+(6, 'jury3', '', 'Леонід Олексійович Мірошниченко', 'jury3@gmail.com', 'jury', 'Житомир', '+380953489756', NULL, NULL, '[{\"name\":\"3A5Rra_IUiKC.jpg\",\"size\":88564,\"title\":\"avatar-gen714a271addedf7a9b2d6773ddd05cb68\",\"file\":\"/uploads/3A5Rra_IUiKC.jpg\",\"type\":\"image/jpeg\"}]', NULL, NULL, 'no'),
+(7, 'artist1', '', 'Романченко Надія Олексіївна', 'artist1@gmail.com', 'artist', NULL, '+380968569412', '598', '127.0.0.1', '[{\"name\":\"CTUtcD_SdN40.jpg\",\"size\":110822,\"title\":\"avatar-gen11165b1a4081c3f8e4df1912b5a7c2f0\",\"file\":\"/uploads/CTUtcD_SdN40.jpg\",\"type\":\"image/jpeg\"}]', 20, '2023-11-15 01:08:49', 'no'),
+(8, 'artist2', '', 'Кравченко Анна Анатоліївна', 'artist2@gmail.com', 'artist', 'Львiв', '+380502457945', NULL, NULL, '[{\"name\":\"IS0kLmGPADzH.jpg\",\"size\":135635,\"title\":\"avatar-gene7bb4e5f49a243380f9db30758c37c1b\",\"file\":\"/uploads/IS0kLmGPADzH.jpg\",\"type\":\"image/jpeg\"}]', 21, NULL, 'no'),
+(9, 'jury4', '', 'Василь Михайлович Миколенко', 'jury4@gmail.com', 'jury', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'no'),
+(10, 'artist3', '', 'Володимир Андрійович Прокопчук', 'artist3@gmail.com', 'artist', NULL, NULL, '729', '127.0.0.1', '[{\"name\":\"iGH37VXZUM4T.jpg\",\"size\":103896,\"title\":\"avatar-gen11737bbe76296550f669defadda12626[1]\",\"file\":\"/uploads/iGH37VXZUM4T.jpg\",\"type\":\"image/jpeg\"}]', 20, NULL, 'no'),
+(11, 'user1', '', 'Руслан Борисович Васильєв', 'user1@gmail.com', 'customer', NULL, NULL, '787', '127.0.0.1', NULL, NULL, NULL, 'no'),
+(12, 'user2', '', 'Михайло Олександрович Броварчук', 'user2@gmail.com', 'customer', NULL, NULL, '714', '127.0.0.1', NULL, NULL, NULL, 'my'),
+(13, 'user3', '', 'Броваренко Всеволод Іванович', 'user3@gmail.com', 'customer', NULL, NULL, '679', '127.0.0.1', NULL, NULL, NULL, 'all');
+
+--
+-- Индексы сохранённых таблиц
+--
+
+--
+-- Индексы таблицы `companies`
+--
+ALTER TABLE `companies`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `modifications`
+--
+ALTER TABLE `modifications`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `FK_modifications_users` (`user_id`),
+  ADD KEY `entity + row_id` (`entity`,`row_id`);
+
+--
+-- Индексы таблицы `modification_logs`
+--
+ALTER TABLE `modification_logs`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `modifications_id` (`modifications_id`);
+
+--
+-- Индексы таблицы `rates`
+--
+ALTER TABLE `rates`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `unique` (`records_id`,`users_id`),
+  ADD KEY `FK_rates_users_id` (`users_id`);
+
+--
+-- Индексы таблицы `records`
+--
+ALTER TABLE `records`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `FK_records_users_id` (`users_id`);
+
+--
+-- Индексы таблицы `shops`
+--
+ALTER TABLE `shops`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `FK_users_companies_id` (`companies_id`);
+
+--
+-- AUTO_INCREMENT для сохранённых таблиц
+--
+
+--
+-- AUTO_INCREMENT для таблицы `companies`
+--
+ALTER TABLE `companies`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+
+--
+-- AUTO_INCREMENT для таблицы `modifications`
+--
+ALTER TABLE `modifications`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT для таблицы `modification_logs`
+--
+ALTER TABLE `modification_logs`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT для таблицы `rates`
+--
+ALTER TABLE `rates`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+
+--
+-- AUTO_INCREMENT для таблицы `records`
+--
+ALTER TABLE `records`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+
+--
+-- AUTO_INCREMENT для таблицы `shops`
+--
+ALTER TABLE `shops`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=113;
+
+--
+-- AUTO_INCREMENT для таблицы `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+
+--
+-- Ограничения внешнего ключа сохраненных таблиц
+--
+
+--
+-- Ограничения внешнего ключа таблицы `modifications`
+--
+ALTER TABLE `modifications`
+  ADD CONSTRAINT `FK_modifications_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Ограничения внешнего ключа таблицы `modification_logs`
+--
+ALTER TABLE `modification_logs`
+  ADD CONSTRAINT `FK_modification_modifications` FOREIGN KEY (`modifications_id`) REFERENCES `modifications` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Ограничения внешнего ключа таблицы `rates`
+--
+ALTER TABLE `rates`
+  ADD CONSTRAINT `FK_rates_records_id` FOREIGN KEY (`records_id`) REFERENCES `records` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_rates_users_id` FOREIGN KEY (`users_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Ограничения внешнего ключа таблицы `records`
+--
+ALTER TABLE `records`
+  ADD CONSTRAINT `FK_records_users_id` FOREIGN KEY (`users_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Ограничения внешнего ключа таблицы `users`
+--
+ALTER TABLE `users`
+  ADD CONSTRAINT `FK_users_companies_id` FOREIGN KEY (`companies_id`) REFERENCES `companies` (`id`) ON DELETE SET NULL ON UPDATE SET NULL;
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

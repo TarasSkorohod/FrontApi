@@ -23,7 +23,7 @@ Vue.component('last-rates', {
 		
 		rates() { return this.$store.getters.rates },
 		users() { return this.$store.getters.users },
-		record() { return this.$store.getters.records.find( item => item.id == this.records_id )},
+		record() { return this.$store.getters.records.find( item => item.id === this.records_id )},
 		role() { return this.$store.getters["account/data"] ? this.$store.getters["account/data"]["role"] : undefined },
 
 		last_rates() {

@@ -76,14 +76,14 @@ const TestPage = {
                           <th>Кількість кейсів</th>
                         </tr>
                       </thead>
-                      <tbody>
-                        <tr v-for="(group, index) in filteredGroups" :key="index">
-                          <td><a class="link-item" :href="'./pages/segments/segments.html?group=' + group.name">{{ group.name }}</a></td>
-                          <td>{{ group.position }}</td>
-                          <td><a class="link-item" :href="'./pages/segments/segments.html?group=' + group.name">{{ group.segments }}</a></td>
-                          <td><a class="link-item" :href="'./pages/segments/segments.html?group=' + group.name">{{ group.cases }}</a></td>
-                        </tr>
-                      </tbody>
+                     <tbody id="tableBody">
+      <tr v-for="(group, index) in filteredGroups" :key="index">
+        <td>{{ group.name }}</td>
+        <td>{{ group.segments }}</td>
+        <td>{{ group.cases }}</td>
+        <!-- Додайте інші поля, які вам потрібні -->
+      </tr>
+    </tbody>
                     </table>
                   </div>
                 </div>

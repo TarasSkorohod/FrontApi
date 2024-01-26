@@ -92,9 +92,9 @@ const RecordsPostPage = {
 	// ~~~~~~~~~~~~~~~~~~~~~~				created	
 	async created() {
 
-		if ( this.role != 'admin' ) this.$store.commit("setPageTitle", "Картка учасника конкурсу" );
+		if ( this.role !== 'admin' ) this.$store.commit("setPageTitle", "Картка учасника конкурсу" );
 
-		if ( this.method == "post" ) {
+		if ( this.method === "post" ) {
 			this.curr_record = { avatar: "", "users_id": this.users_id };
 			this.server_response = "success";
 		} else {
@@ -104,7 +104,7 @@ const RecordsPostPage = {
 			
 				if ( res.data.records ) {
 					this.curr_record = res.data.records;
-					if ( this.curr_record.avatar != "" ) this.curr_record.avatar = JSON.parse( this.curr_record.avatar );
+					if ( this.curr_record.avatar !== "" ) this.curr_record.avatar = JSON.parse( this.curr_record.avatar );
 					
 					this.server_response = "success";
 				};

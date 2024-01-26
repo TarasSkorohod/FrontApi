@@ -12,7 +12,12 @@
 	<link href="./assets/css/ltr/all.min.css" id="stylesheet" rel="stylesheet" type="text/css">
 	<link href="./assets/css/ltr/styles.css" id="stylesheet" rel="stylesheet" type="text/css">
 	<!-- /global stylesheets -->
-    <link href="./assets/css/stylesTabl.css">
+<!--    <link href="./assets/css/style2.css">-->
+<!---->
+    <link href="./assets/css/style2.css" id="stylesheet" rel="stylesheet" type="text/css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+
 	<!-- Core JS files -->
 	<script src="./assets/js/bootstrap/bootstrap.bundle.min.js"></script>
 	<!-- /core JS files -->
@@ -30,6 +35,7 @@
 	<script src="./assets/js/vue/vuex.3.6.2.js"></script>
 	<script src="./assets/js/vue/vue-router.3.3.1.min.js"></script>
 	<!-- /vue JS files -->
+    <link rel="stylesheet" href="./assets/file/datatables.net-bs4/dataTables.bootstrap4.css">
 
 	<script src="./assets/js/plugins/awesome-notifications/index.js"></script>
 	<link href="./assets/js/plugins/awesome-notifications/style.css" rel="stylesheet" type="text/css">
@@ -312,6 +318,7 @@
 
 
 
+
                     <!-- /content area -->
                 </div>
                 <!-- /content area -->
@@ -400,6 +407,8 @@
 	<script src="./vue/pages/LoginPage.js?v<?=time()?>"></script>
 	<script src="./vue/pages/UsersPage.js?v<?=time()?>"></script>
 	<script src="./vue/pages/TestPage.js?v<?=time()?>"></script>
+    <script src="./vue/pages/TestPage2.js?v<?=time()?>"></script>
+    <script src="./vue/pages/TestPage3.js?v<?=time()?>"></script>
 
 	<script src="./vue/pages/Page404.js?v<?=time()?>"></script>
 
@@ -436,6 +445,7 @@
 <!--    <script src="./vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>-->
 <!--    <script src="./js/off-canvas.js"></script>-->
     <script src="./assets/file/datatables.net/jquery.dataTables.js"></script>
-	
+<script src="https://unpkg.com/wavesurfer.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 </body>
 </html>

@@ -2527,6 +2527,7 @@ progress {
 	opacity: 1
 }
 
+
 .form-control::-moz-placeholder {
 	color: var(--input-placeholder-color);
 	opacity: 1

@@ -361,7 +361,7 @@ Vue.component('inno-uploader', {
 							item.html.find('.progress-bar2').fadeOut(400);
 						}
 						
-						item.upload.status != 'cancelled' && item.html.find('.fileuploader-action-retry').length == 0 ? item.html.find('.column-actions').prepend(
+						item.upload.status !== 'cancelled' && item.html.find('.fileuploader-action-retry').length === 0 ? item.html.find('.column-actions').prepend(
 							'<button type="button" class="fileuploader-action fileuploader-action-retry" title="Retry"><i class="fileuploader-icon-retry"></i></button>'
 						) : null;
 					},
