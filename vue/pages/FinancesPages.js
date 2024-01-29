@@ -120,13 +120,11 @@ const FinancesPages = {
             this.currentPage = 1;
         },
 
-        // Новий метод для відкриття модального вікна редагування
         editGroup(group) {
             this.editedGroup = { ...group };
             this.isEditModalOpen = true;
         },
 
-        // Новий метод для збереження редагованої групи
         saveEditedGroup() {
             const groupIndex = this.groups.findIndex(g => g.id === this.editedGroup.id);
             if (groupIndex !== -1) {
@@ -135,7 +133,6 @@ const FinancesPages = {
             this.closeEditModal();
         },
 
-        // Новий метод для закриття модального вікна редагування
         closeEditModal() {
             this.isEditModalOpen = false;
             this.editedGroup = {

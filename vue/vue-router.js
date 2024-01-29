@@ -22,12 +22,14 @@ const routes =
 		component: FinancesPages,
 		meta: { title: "сегменти" }
 	},
+
 	{
 		path: '/service-details/:groupId',
 		name: 'serviceDetails',
 		component: ServicePages,
-		meta: { title: "Обслуговування онлайн" }
+		meta: { title: 'Обслуговування онлайн' },
 	},
+
 
 
 	// { path: '/', component: RecordsPage, meta: { title: "Записи" } },
