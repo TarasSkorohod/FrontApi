@@ -472,6 +472,7 @@ button {
     align-items: center;
 }
 
+
 .modal img {
     max-width: 100%;
     max-height: 100%;
@@ -496,3 +497,24 @@ button {
 .modal-next {
     right: 10px;
 }
+.modal {
+    display: block;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+}
+/* Стилі для темної теми */
+.dark-theme {
+    background-color: #1a1a1a; /* Фон темної теми */
+    color: #ffffff; /* Колір тексту темної теми */
+}
+
+/* Стилі для світлої теми */
+.light-theme {
+    background-color: #ffffff; /* Фон світлої теми */
+    color: #000000; /* Колір тексту світлої теми */
+}
+
+/* Додаткові стилі за потреби */

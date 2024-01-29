@@ -1,15 +1,16 @@
+"use strict";
 
-const testPage3 = {
+const ServicePages = {
     mixins: [globalMixin],
 
     data() {
         return {
             wavesurfer: null,
             imagesGlobal:[
-                { src: "assets/images/favicon.png", alt: "Опис зображення 2" },
+                { src: "../../assets/images/favicon.png", alt: "Опис зображення 2" },
             ],
             galleryImages: [
-                { src: "assets/images/favicon.png", alt: "Опис зображення 2" },
+                { src: "../../assets/images/favicon.png", alt: "Опис зображення 2" },
 
             ],
             selectedImageG: null,
@@ -20,15 +21,32 @@ const testPage3 = {
         };
     },
 
+    // ...
+
     mounted() {
         this.initWaveSurfer();
         this.initThumbnailClickHandlers();
         this.showImageGlobal();
         this.showImage(document.querySelector('.modal img'));
+
+        // Додайте наступні два рядки
+        const modalImage = document.querySelector('.modal img');
+        this.closeFullscreen(modalImage);
     },
+
+// ...
+
 
 
     methods: {
+        beforeRouteLeave(to, from, next) {
+            // Check if the gallery is currently in fullscreen mode
+            if (this.isGalleryFullscreen) {
+                // Close the fullscreen image window
+                this.closeFullscreen();
+            }
+            next();
+        },
         initWaveSurfer() {
             this.wavesurfer = WaveSurfer.create({
                 container: "#audiowave",
@@ -69,7 +87,7 @@ const testPage3 = {
             modal.addEventListener('click', this.closeFullscreen);
         },
 
-        closeFullscreen() {
+        closeFullscreen(modalImage) {
             const modal = document.querySelector('.modal');
             modal.style.display = 'none';
             modal.removeEventListener('click', this.closeFullscreen);
@@ -114,7 +132,7 @@ const testPage3 = {
     },
 
 
-template: `
+    template: `
 
 <div class="bb_color">
 
@@ -344,15 +362,17 @@ template: `
             <button class="btn__grey">Перейти до наступного</button>
         </div>
     </div>
-    <div class="modal">
-        <img>
-         <button class="modal-prev" @click="prevImage">&#8249;</button>
-<button class="modal-next" @click="nextImage">&#8250;</button>
-
+<div class="modal">
+    <img alt="Немає зображення ">
+    <button class="modal-close" @click="closeFullscreen">&times;</button>
+    <button class="modal-prev" @click="prevImage">&#8249;</button>
+    <button class="modal-next" @click="nextImage">&#8250;</button>
     <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50" fill="none">
-       
+        <!-- Ваш SVG-код тут -->
     </svg>
-    </div>
+</div>
+
+
 
 
 </div>
