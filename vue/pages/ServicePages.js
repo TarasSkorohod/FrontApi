@@ -1,5 +1,5 @@
 
-const testPage3 = {
+const ServicePages = {
     mixins: [globalMixin],
 
     data() {
@@ -114,7 +114,7 @@ const testPage3 = {
     },
 
 
-template: `
+    template: `
 
 <div class="bb_color">
 
@@ -345,7 +345,7 @@ template: `
         </div>
     </div>
     <div class="modal">
-        <img>
+        <img alt="Немає зображення ">
          <button class="modal-prev" @click="prevImage">&#8249;</button>
 <button class="modal-next" @click="nextImage">&#8250;</button>
 

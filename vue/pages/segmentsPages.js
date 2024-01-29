@@ -1,85 +1,85 @@
-const TestPage2 = {
-	mixins: [globalMixin],
+const segmentsPages = {
+    mixins: [globalMixin],
 
-	data: function () {
-		return {
-			searchInput: '',
-			selectedPosition: '',
-			groups: [
-				{ name: "Група 202323", segments: 1, cases: 1, averageValue: "1", deadline: "2023-01-01" },
-				{ name: "Група 2023", segments: 1, cases: 1, averageValue: "1", deadline: "2023-01-01" },
-				{ name: "Група 2023", segments: 1, cases: 1, averageValue: "1", deadline: "2023-01-01" },
-				{ name: "Група 2023", segments: 1, cases: 1, averageValue: "1", deadline: "2023-01-01" },
-				{ name: "Група 2023", segments: 1, cases: 1, averageValue: "1", deadline: "2023-01-01" },
-				{ name: "Група 202323", segments: 1, cases: 1, averageValue: "1", deadline: "2023-01-01" },
-				{ name: "Група 2023", segments: 1, cases: 1, averageValue: "1", deadline: "2023-01-01" },
-				{ name: "Г3рупа 223023", segments: 1, cases: 1, averageValue: "1", deadline: "2023-01-01" },
-				{ name: "Група 2023", segments: 1, cases: 1, averageValue: "1", deadline: "2023-01-01" },
-				{ name: "Група 2023", segments: 1, cases: 1, averageValue: "1", deadline: "2023-01-01" },
-				{ name: "Група 2023", segments: 1, cases: 1, averageValue: "1", deadline: "2023-01-01" },
-				{ name: "Група 2023", segments: 1, cases: 1, averageValue: "1", deadline: "2023-01-01" },
-				{ name: "Гр32упа 2023", segments: 1, cases: 1, averageValue: "1", deadline: "2023-01-01" },
-				{ name: "Група 2023", segments: 1, cases: 1, averageValue: "1", deadline: "2023-01-01" },
-				{ name: "Група 2023", segments: 1, cases: 1, averageValue: "1", deadline: "2023-01-01" },
+    data: function () {
+        return {
+            searchInput: '',
+            selectedPosition: '',
+            groups: [
+                { name: "Група 202323", segments: 1, cases: 1, averageValue: "1", deadline: "2023-01-01" },
+                { name: "Група 2023", segments: 1, cases: 1, averageValue: "1", deadline: "2023-01-01" },
+                { name: "Група 2023", segments: 1, cases: 1, averageValue: "1", deadline: "2023-01-01" },
+                { name: "Група 2023", segments: 1, cases: 1, averageValue: "1", deadline: "2023-01-01" },
+                { name: "Група 2023", segments: 1, cases: 1, averageValue: "1", deadline: "2023-01-01" },
+                { name: "Група 202323", segments: 1, cases: 1, averageValue: "1", deadline: "2023-01-01" },
+                { name: "Група 2023", segments: 1, cases: 1, averageValue: "1", deadline: "2023-01-01" },
+                { name: "Г3рупа 223023", segments: 1, cases: 1, averageValue: "1", deadline: "2023-01-01" },
+                { name: "Група 2023", segments: 1, cases: 1, averageValue: "1", deadline: "2023-01-01" },
+                { name: "Група 2023", segments: 1, cases: 1, averageValue: "1", deadline: "2023-01-01" },
+                { name: "Група 2023", segments: 1, cases: 1, averageValue: "1", deadline: "2023-01-01" },
+                { name: "Група 2023", segments: 1, cases: 1, averageValue: "1", deadline: "2023-01-01" },
+                { name: "Гр32упа 2023", segments: 1, cases: 1, averageValue: "1", deadline: "2023-01-01" },
+                { name: "Група 2023", segments: 1, cases: 1, averageValue: "1", deadline: "2023-01-01" },
+                { name: "Група 2023", segments: 1, cases: 1, averageValue: "1", deadline: "2023-01-01" },
 
-			],
-			isDropdownOpen: false,
-			itemsPerPage: 5,
-			currentPage: 1,
-		};
-	},
+            ],
+            isDropdownOpen: false,
+            itemsPerPage: 5,
+            currentPage: 1,
+        };
+    },
 
-	computed: {
-		filteredGroups() {
-			const searchLower = this.searchInput.toLowerCase();
-			return this.groups.filter(group =>
-				(group.name.toLowerCase().includes(searchLower) ||
-					group.segments.toString().includes(searchLower) ||
-					group.cases.toString().includes(searchLower)) &&
-				(this.selectedPosition === '' || group.position === this.selectedPosition)
-			);
-		},
+    computed: {
+        filteredGroups() {
+            const searchLower = this.searchInput.toLowerCase();
+            return this.groups.filter(group =>
+                (group.name.toLowerCase().includes(searchLower) ||
+                    group.segments.toString().includes(searchLower) ||
+                    group.cases.toString().includes(searchLower)) &&
+                (this.selectedPosition === '' || group.position === this.selectedPosition)
+            );
+        },
 
-		totalPages() {
-			return Math.ceil(this.filteredGroups.length / this.itemsPerPage);
-		},
+        totalPages() {
+            return Math.ceil(this.filteredGroups.length / this.itemsPerPage);
+        },
 
-		paginatedGroups() {
-			const start = (this.currentPage - 1) * this.itemsPerPage;
-			const end = start + this.itemsPerPage;
-			return this.filteredGroups.slice(start, end);
-		},
-	},
+        paginatedGroups() {
+            const start = (this.currentPage - 1) * this.itemsPerPage;
+            const end = start + this.itemsPerPage;
+            return this.filteredGroups.slice(start, end);
+        },
+    },
 
-	methods: {
-		toggleDropdown() {
-			this.isDropdownOpen = !this.isDropdownOpen;
-		},
+    methods: {
+        toggleDropdown() {
+            this.isDropdownOpen = !this.isDropdownOpen;
+        },
 
-		updatePositionFilter(position) {
-			this.selectedPosition = position;
-			this.isDropdownOpen = false;
-		},
+        updatePositionFilter(position) {
+            this.selectedPosition = position;
+            this.isDropdownOpen = false;
+        },
 
-		nextPage() {
-			if (this.currentPage < this.totalPages) {
-				this.currentPage += 1;
-			}
-		},
+        nextPage() {
+            if (this.currentPage < this.totalPages) {
+                this.currentPage += 1;
+            }
+        },
 
-		prevPage() {
-			if (this.currentPage > 1) {
-				this.currentPage -= 1;
-			}
-		},
+        prevPage() {
+            if (this.currentPage > 1) {
+                this.currentPage -= 1;
+            }
+        },
 
-		changePageSize(size) {
-			this.itemsPerPage = size;
-			this.currentPage = 1;
-		},
-	},
+        changePageSize(size) {
+            this.itemsPerPage = size;
+            this.currentPage = 1;
+        },
+    },
 
-	template: `
+    template: `
     <div class="container-scroller">
       <div class="container-fluid page-body-wrapper">
         <div class="content-wrapper">

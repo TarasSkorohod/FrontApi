@@ -406,9 +406,9 @@
 	<script src="./vue/pages/HomePage.js?v<?=time()?>"></script>
 	<script src="./vue/pages/LoginPage.js?v<?=time()?>"></script>
 	<script src="./vue/pages/UsersPage.js?v<?=time()?>"></script>
-	<script src="./vue/pages/TestPage.js?v<?=time()?>"></script>
-    <script src="./vue/pages/TestPage2.js?v<?=time()?>"></script>
-    <script src="./vue/pages/TestPage3.js?v<?=time()?>"></script>
+	<script src="./vue/pages/FinancesTablePages.js?v<?=time()?>"></script>
+    <script src="./vue/pages/segmentsPages.js?v<?=time()?>"></script>
+    <script src="vue/pages/ServicePages.js?v<?=time()?>"></script>
 
 	<script src="./vue/pages/Page404.js?v<?=time()?>"></script>
 

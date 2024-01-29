@@ -1,46 +1,46 @@
 "use strict";
 
-const TestPage = {
-	mixins: [globalMixin],
+const FinancesTablePages = {
+    mixins: [globalMixin],
 
-	data: function () {
-		return {
-			searchInput: '',
-			selectedPosition: '',
-			groups: [
-				{ name: "Група 2023", position: "1", segments: 1, cases: 1 },
-				{ name: "Група 2022", position: "2", segments: 2, cases: 2 },
-				{ name: "Група 2021", position: "3", segments: 3, cases: 3 },
-				{ name: "Група 2020", position: "1", segments: 4, cases: 4 },
-			],
-			isDropdownOpen: false,
-		};
-	},
+    data: function () {
+        return {
+            searchInput: '',
+            selectedPosition: '',
+            groups: [
+                { name: "Група 2023",  segments: 1, cases: 1 },
+                { name: "Група 2022", segments: 2, cases: 2 },
+                { name: "Група 2021", segments: 3, cases: 3 },
+                { name: "Група 2020",  segments: 4, cases: 4 },
+            ],
+            isDropdownOpen: false,
+        };
+    },
 
-	computed: {
-		filteredGroups() {
-			const searchLower = this.searchInput.toLowerCase();
-			return this.groups.filter(group =>
-				(group.name.toLowerCase().includes(searchLower) ||
-					group.segments.toString().includes(searchLower) ||
-					group.cases.toString().includes(searchLower)) &&
-				(this.selectedPosition === '' || group.position === this.selectedPosition)
-			);
-		},
-	},
+    computed: {
+        filteredGroups() {
+            const searchLower = this.searchInput.toLowerCase();
+            return this.groups.filter(group =>
+                (group.name.toLowerCase().includes(searchLower) ||
+                    group.segments.toString().includes(searchLower) ||
+                    group.cases.toString().includes(searchLower)) &&
+                (this.selectedPosition === '' || group.position === this.selectedPosition)
+            );
+        },
+    },
 
-	methods: {
-		toggleDropdown() {
-			this.isDropdownOpen = !this.isDropdownOpen;
-		},
+    methods: {
+        toggleDropdown() {
+            this.isDropdownOpen = !this.isDropdownOpen;
+        },
 
-		updatePositionFilter(position) {
-			this.selectedPosition = position;
-			this.isDropdownOpen = false;
-		},
-	},
+        updatePositionFilter(position) {
+            this.selectedPosition = position;
+            this.isDropdownOpen = false;
+        },
+    },
 
-	template: `
+    template: `
     <div class="container-scroller">
       <div class="container-fluid page-body-wrapper">
         <div class="content-wrapper">
@@ -71,17 +71,16 @@ const TestPage = {
                       <thead>
                         <tr>
                           <th>Назва</th>
-                          <th>Позиції</th>
                           <th>Кількість сегментів</th>
                           <th>Кількість кейсів</th>
                         </tr>
                       </thead>
                      <tbody id="tableBody">
-      <tr v-for="(group, index) in filteredGroups" :key="index">
+     
+     <tr v-for="(group, index) in filteredGroups" :key="index">
         <td>{{ group.name }}</td>
         <td>{{ group.segments }}</td>
         <td>{{ group.cases }}</td>
-        <!-- Додайте інші поля, які вам потрібні -->
       </tr>
     </tbody>
                     </table>

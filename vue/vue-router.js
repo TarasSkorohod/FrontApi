@@ -3,7 +3,11 @@
 const routes = 
 [
 
-	{ path: '/', component: testPage3, meta: { title: "Виконавцi" } },
+	// {path: '/', component: segmentsPages, meta: {title: "Фінанси"}},
+	// {path: '/', component: ServicePages, meta: {title: "сервіс"}},
+	{path: '/', component: FinancesTablePages, meta: {title: "сегменти"}}
+
+
 	//{ path: '/', component: HomePage, meta: { title: "Головна" } },
 	
 	// { path: '/', component: RecordsPage, meta: { title: "Записи" } },
