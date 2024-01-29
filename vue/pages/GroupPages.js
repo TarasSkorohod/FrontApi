@@ -1,34 +1,34 @@
 "use strict";
 
-const segmentsPages = {
+
+const GroupPages = {
     mixins: [globalMixin],
 
     data: function () {
         return {
             searchInput: '',
             selectedPosition: '',
+            currentPage: 1,
+            itemsPerPage: 5,
+            isDropdownOpen: false,
             rowsPerPageOptions: [5, 10, 25, 50, 100, 200],
             groups: [
-                { name: "Група 202323", segments: 1, cases: 1, averageValue: "1", deadline: "2023-01-01" },
-                { name: "Група 2023", segments: 1, cases: 1, averageValue: "1", deadline: "2023-01-01" },
-                { name: "Група 2023", segments: 1, cases: 1, averageValue: "1", deadline: "2023-01-01" },
-                { name: "Група 2023", segments: 1, cases: 1, averageValue: "1", deadline: "2023-01-01" },
-                { name: "Група 2023", segments: 1, cases: 1, averageValue: "1", deadline: "2023-01-01" },
-                { name: "Група 202323", segments: 1, cases: 1, averageValue: "1", deadline: "2023-01-01" },
-                { name: "Група 2023", segments: 1, cases: 1, averageValue: "1", deadline: "2023-01-01" },
-                { name: "Г3рупа 223023", segments: 1, cases: 1, averageValue: "1", deadline: "2023-01-01" },
-                { name: "Група 2023", segments: 1, cases: 1, averageValue: "1", deadline: "2023-01-01" },
-                { name: "Група 2023", segments: 1, cases: 1, averageValue: "1", deadline: "2023-01-01" },
-                { name: "Група 2023", segments: 1, cases: 1, averageValue: "1", deadline: "2023-01-01" },
-                { name: "Група 2023", segments: 1, cases: 1, averageValue: "1", deadline: "2023-01-01" },
-                { name: "Гр32упа 2023", segments: 1, cases: 1, averageValue: "1", deadline: "2023-01-01" },
-                { name: "Група 2023", segments: 1, cases: 1, averageValue: "1", deadline: "2023-01-01" },
-                { name: "Група 2023", segments: 1, cases: 1, averageValue: "1", deadline: "2023-01-01" },
-
+                { id: 1, name: "Група 2023", segments: 1, cases: 1 },
+                { id: 2, name: "Група 2022", segments: 2, cases: 2 },
+                { id: 3, name: "Група 2023", segments: 1, cases: 1 },
+                { id: 4, name: "Група 2023", segments: 1, cases: 1 },
+                { id: 5, name: "Група 2022", segments: 2, cases: 2 },
+                { id: 6, name: "Група 2023", segments: 1, cases: 1 },
+                { id: 7, name: "Група 2023", segments: 1, cases: 1 },
+                { id: 8, name: "Група 2022", segments: 2, cases: 2 },
+                { id: 9, name: "Група 2023", segments: 1, cases: 1 },
+                { id: 10, name: "Група 2022", segments: 2, cases: 2 },
+                { id: 11, name: "Група 2023", segments: 1, cases: 1 },
+                { id: 12, name: "Група 2023", segments: 1, cases: 1 },
+                { id: 13, name: "Група 2022", segments: 2, cases: 2 },
+                { id: 14, name: "Група 2023", segments: 1, cases: 1 },
+                // ... інші групи
             ],
-            isDropdownOpen: false,
-            itemsPerPage: 5,
-            currentPage: 1,
         };
     },
 
@@ -66,7 +66,8 @@ const segmentsPages = {
         },
 
         viewDetails(group) {
-            this.$router.push({ name: 'financesDetails', params: { groupId: group.id } });
+            // Здійснюємо перехід на окрему сторінку для перегляду деталей групи
+            this.$router.push({ name: 'groupDetails', params: { groupId: group.id } });
         },
         toggleDropdown() {
             this.isDropdownOpen = !this.isDropdownOpen;
@@ -97,7 +98,7 @@ const segmentsPages = {
     },
 
     template: `
-     <div class="container-scroller">
+    <div class="container-scroller">
       <div class="container-fluid page-body-wrapper">
         <div class="content-wrapper">
           <div class="row">
@@ -125,11 +126,10 @@ const segmentsPages = {
                     <table id="recent-purchases-listing" class="table">
                       <thead>
                         <tr>
-                          <th>Сегмент</th>
+                          <th>Назва</th>
                           <th>Кількість сегментів</th>
-                          <th>Оцінені роботи</th>
-                          <th>Середнє значення</th>
-                          <th>Дедлайн</th>
+                          <th>Кількість кейсів</th>
+                          <th>Деталі</th>
                         </tr>
                       </thead>
                       <tbody id="tableBody">
@@ -137,8 +137,6 @@ const segmentsPages = {
                           <td>{{ group.name }}</td>
                           <td>{{ group.segments }}</td>
                           <td>{{ group.cases }}</td>
-                          <td>{{ group.averageValue }}</td>
-                          <td>{{ group.deadline }}</td>
                           <td>
                             <button @click="viewDetails(group)" class="btn btn-primary">Деталі</button>
                           </td>
@@ -173,3 +171,4 @@ const segmentsPages = {
     </div>
   `,
 };
+
